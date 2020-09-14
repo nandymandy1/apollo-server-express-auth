@@ -8,10 +8,10 @@ import {
 
 import {
     SECRET
-} from '../../../config';
+} from '../config';
 
-export const issueAuthToken = async (user) => {
-    let token = await sign(user, SECRET, {
+export const issueAuthToken = async (jwtPayload) => {
+    let token = await sign(jwtPayload, SECRET, {
         expiresIn: 20
     });
     return `Bearer ${token}`;

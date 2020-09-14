@@ -12,7 +12,6 @@
   "license": "ISC",
   "dependencies": {
     "apollo-server-express": "^2.17.0",
-    "await-to-js": "^2.1.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "consola": "^2.15.0",
@@ -20,7 +19,6 @@
     "dotenv": "^8.2.0",
     "esm": "^3.2.25",
     "express": "^4.17.1",
-    "express-jwt": "^6.0.0",
     "graphql": "^15.3.0",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.20",

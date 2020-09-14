@@ -6,10 +6,11 @@ import {
 import {
     ApolloError
 } from 'apollo-server-express';
+
 import {
     serializeUser,
     issueAuthToken
-} from './functions/Userfunctions';
+} from '../../helpers/Userfunctions';
 
 export default {
     Query: {

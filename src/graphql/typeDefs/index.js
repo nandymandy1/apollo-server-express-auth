@@ -1,9 +1,9 @@
-import root from './root';
+import baseDef from './baseDef';
 import post from './post';
 import user from './user';
 
 export default [
-    root,
+    baseDef,
     post,
     user
 ];
