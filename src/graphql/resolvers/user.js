@@ -12,7 +12,13 @@ import {
     issueAuthToken
 } from '../../helpers/Userfunctions';
 
+import {
+    UserRegisterationRules,
+    UserAuthenticationRules,
+} from '../../validations';
+
 export default {
+    // Standarad User Query Property
     Query: {
         /**
          * @DESC to authenticate using parameters
@@ -25,6 +31,8 @@ export default {
         }, {
             User
         }) => {
+            // Validate Incoming User Credentials
+            await UserAuthenticationRules.validate({ username, password }, { abortEarly: false });
             // Find the user from the database
             let user = await User.findOne({
                 username
@@ -58,6 +66,7 @@ export default {
             }
         }) => user,
     },
+    // Standarad User Mutation Property
     Mutation: {
         /**
          * @DESC to Register new user
@@ -70,10 +79,14 @@ export default {
             User
         }) => {
             try {
+            
                 let {
                     email,
                     username
                 } = newUser;
+
+                // Validate Incoming New User Arguments
+                await UserRegisterationRules.validate(newUser, {abortEarly: false});
 
                 // Check if the Username is taken
                 let user = await User.findOne({

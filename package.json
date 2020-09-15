@@ -22,6 +22,7 @@
     "graphql": "^15.3.0",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.20",
-    "mongoose": "^5.10.5"
+    "mongoose": "^5.10.5",
+    "yup": "^0.29.3"
   }
 }
