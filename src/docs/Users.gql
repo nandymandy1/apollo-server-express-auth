@@ -1,0 +1,41 @@
+mutation REGISTER_USER {
+  registerUser(
+    newUser: {
+      username: "nandymandy"
+      password: "1234567890"
+      firstName: "Narendra"
+      lastName: "Maurya"
+      email: "mauryanarendra09@gmail.com"
+    }
+  ) {
+    token
+    user {
+      id
+      username
+      email
+      firstName
+      lastName
+    }
+  }
+}
+
+query LOGIN_USER {
+  loginUser(username: "nandymandy", password: "123456790") {
+    token
+    user {
+      id
+      email
+      firstName
+      lastName
+    }
+  }
+}
+
+query AUTH_USER {
+  authUser{
+    id
+    lastName
+    username
+    firstName
+  }
+}

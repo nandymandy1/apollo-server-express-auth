@@ -1,8 +1,4 @@
 import {
-    verify
-} from 'jsonwebtoken';
-
-import {
     SECRET
 } from '../config';
 
@@ -10,6 +6,15 @@ import {
     User
 } from '../models';
 
+import {
+    verify
+} from 'jsonwebtoken';
+
+
+/**
+ * Custom User Authentication Middleware
+ * Which Finds the user from the database using the request token 
+ */
 const AuthMiddleware = async (req, res, next) => {
     const authHeader = req.get("Authorization");
     if (!authHeader) {
@@ -38,8 +43,15 @@ const AuthMiddleware = async (req, res, next) => {
         return next();
     }
 
+    // Find the user by decoded token
+    let authUser = await User.findById(decodedToken.id);
+    if(!authUser){
+        req.isAuth = false;
+        return next();
+    }
+    
     req.isAuth = true;
-    req.user = await User.findById(decodedToken.id);
+    req.user = authUser;
     next();
 }
 

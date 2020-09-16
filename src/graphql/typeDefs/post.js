@@ -4,7 +4,18 @@ import {
 
 export default gql `
     extend type Query {
-       hello: String!
+       allPosts: [Post!]!
+    }
+
+    extend type Mutation {
+        createPost(newPost: PostInput): Post! @isAuth
+        updatePost(updatedPost: PostInput): Post! @isAuth
+    }
+
+    input PostInput {
+        title: String!
+        content: String!
+        featuredImage: String
     }
 
     type Post {

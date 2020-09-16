@@ -1,0 +1,21 @@
+mutation NEW_POST {
+  createPost(newPost:{
+    title: "This is title of One",
+    content: "This is and awesome post created from Apollo Server Running on the top of Expressjs and MongoDB.",
+  }){
+    id
+    title
+    content,
+    createdAt
+  }
+}
+
+query ALL_POSTS {
+  allPosts{
+    id
+    title
+    content
+    createdAt
+    updatedAt
+  }
+}

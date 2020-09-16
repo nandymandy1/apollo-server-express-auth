@@ -9,10 +9,10 @@ export default gql `
     }
 
     extend type Mutation {
-        registerUser(newUser: NewUser!): AuthUser!
+        registerUser(newUser: UserInput!): AuthUser!
     }
 
-    input NewUser {
+    input UserInput {
         email:String!
         username:String!
         lastName: String!

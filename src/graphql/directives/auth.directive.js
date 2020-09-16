@@ -7,7 +7,6 @@ import {
     SchemaDirectiveVisitor
 } from 'apollo-server-express';
 
-
 export class IsAuthDirective extends SchemaDirectiveVisitor {
     visitFieldDefinition(field) {
         const {

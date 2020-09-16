@@ -14,7 +14,11 @@ const PostSchema = new Schema({
     },
     featuredImage: {
         type: String,
-        required: true
+        required: false
+    },
+    author:{
+        ref: 'users',
+        type: Schema.Types.ObjectId
     }
 }, {
     timestamps: true
