@@ -4,6 +4,10 @@ import {
 
 export default {
     Query: {
+        /**
+         * @DESC to Get all the Posts
+         * @Access Public
+         */
         allPosts: async (_, {}, {
             Post
         }) => {
@@ -12,6 +16,11 @@ export default {
         },
     },
     Mutation: {
+        /**
+         * @DESC to Create new Post
+         * @Params newPost{ title!, content!, featuredImage }
+         * @Access Private
+         */
         createPost: async (_, {
             newPost
         }, {
@@ -42,8 +51,43 @@ export default {
                 id: result._id.toString()
             }
 
+            return result;
+        },
+        /**
+         * @DESC to Update an Existing Post by ID
+         * @Params updatedPost { title!, content!, featuredImage }
+         * @Access Private
+         */
+        updatePost: async (_, {
+            updatedPost,
+            id,
+        }, {
+            Post,
+            user
+        }) => {
+            let post = await Post.findByIdAndUpdate(
+                id,
+                updatedPost, {
+                    new: true
+                }
+            );
+            return post;
+        },
+        /**
+         * @DESC to Delete an Existing Post by ID
+         * @Params id!
+         * @Access Private
+         */
+        deletePost: async (_, {
+            id,
+        }, {
+            Post,
+            user
+        }) => {
+            await Post.findByIdAndDelete(id);
             return {
-                ...result
+                success: true,
+                message: "Post Deleted Successfully."
             }
         }
     }

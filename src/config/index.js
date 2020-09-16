@@ -10,5 +10,5 @@ export const {
     DB,
     PORT,
     SECRET,
-    BASE_URL = `http://localhost:${PORT}/`
+    BASE_URL = `http://localhost:${PORT}`
 } = parsed;

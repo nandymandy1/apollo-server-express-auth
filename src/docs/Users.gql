@@ -11,16 +11,19 @@ mutation REGISTER_USER {
     token
     user {
       id
-      username
       email
-      firstName
+      username
       lastName
+      firstName
     }
   }
 }
 
 query LOGIN_USER {
-  loginUser(username: "nandymandy", password: "123456790") {
+  loginUser(
+      username: "nandymandy", 
+      password: "123456790"
+    ) {
     token
     user {
       id

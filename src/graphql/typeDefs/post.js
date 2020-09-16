@@ -9,13 +9,19 @@ export default gql `
 
     extend type Mutation {
         createPost(newPost: PostInput): Post! @isAuth
-        updatePost(updatedPost: PostInput): Post! @isAuth
+        deletePost(id: ID!): PostMessageResponse! @isAuth
+        updatePost(updatedPost: PostInput, id: ID!): Post! @isAuth
     }
 
     input PostInput {
         title: String!
         content: String!
         featuredImage: String
+    }
+
+    type PostMessageResponse {
+        message: String!
+        success: Boolean
     }
 
     type Post {
