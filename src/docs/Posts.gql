@@ -1,19 +1,19 @@
 # Muration to Create a new Post
 mutation NEW_POST(
-  $title: String!, 
-  $content: String!, 
-  $featuredImage: String
-) {
-  createPost(newPost:{
-    title: $title,
-    content: $content,
-    featuredImage: $featuredImage
-  }){
-    id
-    title
-    content,
-    createdAt
-  }
+    $title: String!, 
+    $content: String!, 
+    $featuredImage: String
+  ) {
+    createPost(newPost:{
+      title: $title,
+      content: $content,
+      featuredImage: $featuredImage
+    }){
+      id
+      title
+      content,
+      createdAt
+    }
 }
 
 # Query to Fetch all the Posts
