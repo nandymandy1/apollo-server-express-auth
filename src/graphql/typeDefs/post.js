@@ -5,6 +5,7 @@ import {
 export default gql `
     extend type Query {
        allPosts: [Post!]!
+       getPostById(id: ID!): Post!
     }
 
     extend type Mutation {
@@ -26,6 +27,7 @@ export default gql `
 
     type Post {
         id: ID!,
+        author: User!
         title: String!
         content: String!
         createdAt: String!

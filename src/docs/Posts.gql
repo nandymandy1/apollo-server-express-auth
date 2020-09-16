@@ -1,3 +1,4 @@
+# Muration to Create a new Post
 mutation NEW_POST {
   createPost(newPost:{
     title: "This is title of One",
@@ -8,8 +9,10 @@ mutation NEW_POST {
     content,
     createdAt
   }
+
 }
 
+# Query to Fetch all the Posts
 query ALL_POSTS {
   allPosts{
     id
@@ -17,5 +20,41 @@ query ALL_POSTS {
     content
     createdAt
     updatedAt
+  }
+}
+
+# Query to Fetch single Post by ID
+query POST_BY_ID($id: ID!) {
+  getPostById(id: $id) {
+    title
+    content
+    createdAt
+    updatedAt
+    featuredImage
+    author {
+      id
+      username
+      firstName
+    }
+  }
+}
+
+# Mutation to Update the Post (Authentication Required)
+mutation UPDATE_POST_BY_ID($id: ID!) {
+  updatePost(
+    id: $id
+    updatedPost: {
+      title: "Apollo Server is Awesome v0.2"
+      content: "This is and awesome post created by Apollo Server Running on the top of Expressjs and MongoDB Updated."
+    }
+  ) {
+    id
+    title
+    content
+    featuredImage
+    author {
+      id
+      username
+    }
   }
 }

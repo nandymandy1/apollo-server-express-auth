@@ -2,6 +2,10 @@ import {
     NewPostRules
 } from '../../validations';
 
+import {
+    ApolloError
+} from 'apollo-server-express';
+
 export default {
     Query: {
         /**
@@ -11,9 +15,21 @@ export default {
         allPosts: async (_, {}, {
             Post
         }) => {
-            let posts = await Post.find();
+            let posts = await Post.find().populate('author');
             return posts;
         },
+        /**
+         * @DESC to Get single the Post by ID
+         * @Access Public
+         */
+        getPostById: async (_, {
+            id
+        }, {
+            Post
+        }) => {
+            let post = await Post.findById(id).populate('author');
+            return post;
+        }
     },
     Mutation: {
         /**
@@ -30,7 +46,6 @@ export default {
             const {
                 title,
                 content,
-                featuredImage
             } = newPost;
 
             // Validate the incoming new Post arguments
@@ -40,17 +55,17 @@ export default {
             }, {
                 abortEarly: false
             });
-
             // Once the Validations are passed Create New Post
-            const post = new Post(newPost);
+            const post = new Post({
+                ...newPost,
+                author: user.id
+            });
             // Save the post
             let result = await post.save();
-
             result = {
                 ...result.toObject(),
                 id: result._id.toString()
             }
-
             return result;
         },
         /**
@@ -65,13 +80,23 @@ export default {
             Post,
             user
         }) => {
-            let post = await Post.findByIdAndUpdate(
-                id,
-                updatedPost, {
-                    new: true
+            try {
+                let post = await Post.findOneAndUpdate({
+                        _id: id,
+                        author: user.id
+                    },
+                    updatedPost, {
+                        new: true
+                    }
+                );
+                console.log("UPDATE_POST", post);
+                if (!post) {
+                    throw new Error("Unathorized Access");
                 }
-            );
-            return post;
+                return post;
+            } catch (err) {
+                throw new ApolloError(err.message);
+            }
         },
         /**
          * @DESC to Delete an Existing Post by ID
@@ -84,10 +109,21 @@ export default {
             Post,
             user
         }) => {
-            await Post.findByIdAndDelete(id);
-            return {
-                success: true,
-                message: "Post Deleted Successfully."
+            try {
+                let post = await Post.findOneAndDelete({
+                    _id: id,
+                    author: user.id
+                });
+                console.log("DELETE_POST", post);
+                if (!post) {
+                    throw new Error("Unathorized Access");
+                }
+                return {
+                    success: true,
+                    message: "Post Deleted Successfully."
+                }
+            } catch (err) {
+                throw new ApolloError(err.message);
             }
         }
     }

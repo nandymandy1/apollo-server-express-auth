@@ -1,3 +1,4 @@
+# Mutation to Register a new User in the Database
 mutation REGISTER_USER {
   registerUser(
     newUser: {
@@ -19,6 +20,7 @@ mutation REGISTER_USER {
   }
 }
 
+# Query to Authenticate the User 
 query LOGIN_USER {
   loginUser(
       username: "nandymandy", 
@@ -34,6 +36,7 @@ query LOGIN_USER {
   }
 }
 
+# Query to Fetch the Authenticated User by Token
 query AUTH_USER {
   authUser{
     id
