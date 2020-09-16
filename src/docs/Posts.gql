@@ -1,15 +1,19 @@
 # Muration to Create a new Post
-mutation NEW_POST {
+mutation NEW_POST(
+  $title: String!, 
+  $content: String!, 
+  $featuredImage: String
+) {
   createPost(newPost:{
-    title: "This is title of One",
-    content: "This is and awesome post created from Apollo Server Running on the top of Expressjs and MongoDB.",
+    title: $title,
+    content: $content,
+    featuredImage: $featuredImage
   }){
     id
     title
     content,
     createdAt
   }
-
 }
 
 # Query to Fetch all the Posts
@@ -40,12 +44,15 @@ query POST_BY_ID($id: ID!) {
 }
 
 # Mutation to Update the Post (Authentication Required)
-mutation UPDATE_POST_BY_ID($id: ID!) {
+mutation UPDATE_POST_BY_ID($id: ID!,  $title: String!, 
+  $content: String!, 
+  $featuredImage: String) {
   updatePost(
     id: $id
     updatedPost: {
-      title: "Apollo Server is Awesome v0.2"
-      content: "This is and awesome post created by Apollo Server Running on the top of Expressjs and MongoDB Updated."
+      title: $title,
+      content: $content,
+      featuredImage: $featuredImage
     }
   ) {
     id

@@ -1,12 +1,18 @@
 # Mutation to Register a new User in the Database
-mutation REGISTER_USER {
+mutation REGISTER_USER(
+  $username: String!, 
+  $password: String!, 
+  $firstName: String!, 
+  $lastName: String!,
+  $email: String!
+) {
   registerUser(
     newUser: {
-      username: "nandymandy"
-      password: "1234567890"
-      firstName: "Narendra"
-      lastName: "Maurya"
-      email: "mauryanarendra09@gmail.com"
+      username: $username
+      password: $password
+      firstName: $firstName
+      lastName: $lastName
+      email: $email
     }
   ) {
     token
@@ -21,10 +27,13 @@ mutation REGISTER_USER {
 }
 
 # Query to Authenticate the User 
-query LOGIN_USER {
+query LOGIN_USER (
+  $username: String!, 
+  $password: String!
+) {
   loginUser(
-      username: "nandymandy", 
-      password: "123456790"
+      username: $username, 
+      password: $password
     ) {
     token
     user {
