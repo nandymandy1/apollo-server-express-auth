@@ -8,6 +8,7 @@ import {
 import {
     DB,
     PORT,
+    IN_PROD
 } from './config';
 import {
     ApolloServer,
@@ -35,6 +36,7 @@ const server = new ApolloServer({
     typeDefs,
     resolvers,
     schemaDirectives,
+    playground: !IN_PROD,
     context: ({
         req
     }) => {
