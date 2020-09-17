@@ -6,8 +6,7 @@ import {
     ApolloError
 } from 'apollo-server-express';
 
-const myCustomLabels = {
-    totalDocs: 'totalPosts',
+const PostLabels = {
     docs: 'posts',
     limit: 'perPage',
     nextPage: 'next',
@@ -15,6 +14,7 @@ const myCustomLabels = {
     meta: 'paginator',
     page: 'currentPage',
     pagingCounter: 'slNo',
+    totalDocs: 'totalPosts',
     totalPages: 'totalPages',
 };
 
@@ -57,7 +57,7 @@ export default {
             const options = {
                 page: page || 1,
                 limit: limit || 10,
-                customLabels: myCustomLabels,
+                customLabels: PostLabels,
                 sort: {
                     createdAt: -1
                 },
@@ -90,7 +90,7 @@ export default {
             const options = {
                 page: page || 1,
                 limit: limit || 10,
-                customLabels: myCustomLabels,
+                customLabels: PostLabels,
                 sort: {
                     createdAt: -1
                 },
