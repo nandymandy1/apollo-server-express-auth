@@ -3,6 +3,8 @@ import {
     Schema
 } from 'mongoose';
 
+import Paginate from 'mongoose-paginate-v2';
+
 const PostSchema = new Schema({
     title: {
         type: String,
@@ -23,6 +25,8 @@ const PostSchema = new Schema({
 }, {
     timestamps: true
 });
+
+PostSchema.plugin(Paginate);
 
 const Post = model('posts', PostSchema);
 

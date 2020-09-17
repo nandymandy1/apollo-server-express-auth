@@ -6,6 +6,18 @@ import {
     ApolloError
 } from 'apollo-server-express';
 
+const myCustomLabels = {
+    totalDocs: 'totalPosts',
+    docs: 'posts',
+    limit: 'perPage',
+    nextPage: 'next',
+    prevPage: 'prev',
+    meta: 'paginator',
+    page: 'currentPage',
+    pagingCounter: 'slNo',
+    totalPages: 'totalPages',
+};
+
 export default {
     Query: {
         /**
@@ -29,12 +41,77 @@ export default {
         }) => {
             let post = await Post.findById(id).populate('author');
             return post;
+        },
+        /**
+         * @DESC to Get Posts by Pagination variables
+         * @Access Public
+         */
+        getPostsWithPagination: async (_, {
+            page,
+            limit,
+            user_id
+        }, {
+            Post
+        }) => {
+
+            const options = {
+                page: page || 1,
+                limit: limit || 10,
+                customLabels: myCustomLabels,
+                sort: {
+                    createdAt: -1
+                },
+                populate: 'author',
+            };
+
+            let query = {};
+            if (user_id) {
+                query = {
+                    author: user_id
+                }
+            }
+
+            let posts = await Post.paginate(query, options);
+
+            return posts;
+        },
+        /**
+         * @DESC to Get Posts by Pagination variables
+         * @Access Public
+         */
+        getMyPostsWithPagination: async (_, {
+            page,
+            limit
+        }, {
+            Post,
+            user
+        }) => {
+
+            const options = {
+                page: page || 1,
+                limit: limit || 10,
+                customLabels: myCustomLabels,
+                sort: {
+                    createdAt: -1
+                },
+                populate: 'author',
+            };
+
+            let posts = await Post.paginate({
+                author: user.id
+            }, options);
+
+            return posts;
         }
     },
     Mutation: {
         /**
          * @DESC to Create new Post
-         * @Params newPost{ title!, content!, featuredImage }
+         * @Params newPost{ 
+                title!, 
+                content!, 
+                featuredImage 
+            }
          * @Access Private
          */
         createPost: async (_, {
@@ -70,7 +147,11 @@ export default {
         },
         /**
          * @DESC to Update an Existing Post by ID
-         * @Params updatedPost { title!, content!, featuredImage }
+         * @Params updatedPost { 
+                title!, 
+                content!, 
+                featuredImage 
+            }
          * @Access Private
          */
         updatePost: async (_, {
@@ -81,18 +162,25 @@ export default {
             user
         }) => {
             try {
-                let post = await Post.findOneAndUpdate({
-                        _id: id,
-                        author: user.id
-                    },
-                    updatedPost, {
-                        new: true
-                    }
-                );
-                console.log("UPDATE_POST", post);
+                let post = await Post
+                    .findOneAndUpdate({
+                            _id: id,
+                            author: user.id
+                        },
+                        updatedPost, {
+                            new: true
+                        }
+                    );
+
                 if (!post) {
                     throw new Error("Unathorized Access");
                 }
+
+                // Populate the Author Fields
+                await post
+                    .populate('author')
+                    .execPopulate();
+
                 return post;
             } catch (err) {
                 throw new ApolloError(err.message);
@@ -114,7 +202,7 @@ export default {
                     _id: id,
                     author: user.id
                 });
-                console.log("DELETE_POST", post);
+
                 if (!post) {
                     throw new Error("Unathorized Access");
                 }

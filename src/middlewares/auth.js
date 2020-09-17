@@ -16,6 +16,7 @@ import {
  * Which Finds the user from the database using the request token 
  */
 const AuthMiddleware = async (req, res, next) => {
+    // Extract Authorization Header
     const authHeader = req.get("Authorization");
     if (!authHeader) {
         req.isAuth = false;
@@ -29,7 +30,7 @@ const AuthMiddleware = async (req, res, next) => {
         return next();
     }
 
-    // Verify token
+    // Verify the extracted token
     let decodedToken;
     try {
         decodedToken = verify(token, SECRET);
@@ -38,21 +39,22 @@ const AuthMiddleware = async (req, res, next) => {
         return next();
     }
 
+    // If decoded token is null then set authentication of the request false
     if (!decodedToken) {
         req.isAuth = false;
         return next();
     }
 
-    // Find the user by decoded token
+    // If the user has valid token then Find the user by decoded token's id
     let authUser = await User.findById(decodedToken.id);
-    if(!authUser){
+    if (!authUser) {
         req.isAuth = false;
         return next();
     }
-    
+
     req.isAuth = true;
     req.user = authUser;
-    next();
+    return next();
 }
 
 export default AuthMiddleware;
