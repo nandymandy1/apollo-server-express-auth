@@ -68,12 +68,46 @@ mutation UPDATE_POST_BY_ID($id: ID!,  $title: String!,
 
 # Get All Posts With Pagination
 # Get All Posts of a User by User ID (Optional)
-query GET_POSTS_BY_LIMIT_AND_PAGE($page: Int, $limit: Int, $user_id: ID!){
+query GET_POSTS_BY_LIMIT_AND_PAGE(
+    $page: Int, 
+    $limit: Int, 
+    $user_id: ID!
+  ){
   getPostsWithPagination(
     page: $page, 
     limit: $limit, 
     user_id: $user_id
   ){
+    posts{
+      id
+      title
+      content
+      author{
+        id
+        username
+        firstName
+        lastName
+      }
+    }
+    paginator{
+      next
+      prev
+      slNo
+      perPage
+      totalPosts
+      totalPages
+      currentPage
+      hasPrevPage
+      hasNextPage
+    }
+  }
+}
+
+# Get All of the Authenticated User's Post
+
+
+query GET_ALL_MY_POSTS_WITH_PAGINATION{
+  getMyPostsWithPagination(page: 1, limit: 10){
     posts{
       id
       title
