@@ -25,6 +25,8 @@ import resolvers from './graphql/resolvers';
 import AuthMiddleware from './middlewares/auth';
 
 const app = express();
+// Remove x-powered-by header
+app.disable("x-powered-by");
 app.use(AuthMiddleware);
 app.use(bodyParser.json());
 

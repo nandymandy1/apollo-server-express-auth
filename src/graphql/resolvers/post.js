@@ -162,6 +162,18 @@ export default {
             user
         }) => {
             try {
+                let {
+                    title,
+                    content
+                } = updatedPost;
+
+                await NewPostRules.validate({
+                    title,
+                    content
+                }, {
+                    abortEarly: false
+                });
+
                 let post = await Post
                     .findOneAndUpdate({
                             _id: id,
